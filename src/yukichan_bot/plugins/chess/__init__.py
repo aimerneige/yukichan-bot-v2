@@ -4,11 +4,27 @@ from typing import Optional
 from nonebot import on_command, on_fullmatch, on_regex
 from nonebot.adapters import Bot, Event
 from nonebot.params import CommandArg, RegexMatched
-from nonebot.permission import SUPERUSER
+from nonebot.permission import SUPERUSER, Permission
 
 from .core import ChessService, ReplyResult
 
 chess_service = ChessService()
+
+
+async def _is_admin_or_superuser(bot: Bot, event: Event) -> bool:
+    if await SUPERUSER(bot, event):
+        return True
+    sender = getattr(event, "sender", None)
+    if sender:
+        role = getattr(sender, "role", "")
+        if role in ("admin", "owner"):
+            return True
+    member = getattr(event, "member", None)
+    if member:
+        roles = getattr(member, "roles", [])
+        if any(r in ("2", "4", 2, 4, "admin", "owner") for r in roles):
+            return True
+    return False
 
 
 def _get_sender_info(event: Event) -> tuple[int, str]:
@@ -119,7 +135,12 @@ async def _(bot: Bot, event: Event):
     await _send_reply(draw_matcher, bot, event, res)
 
 
-abort_matcher = on_fullmatch(["中断", "abort"], priority=2, block=True)
+abort_matcher = on_fullmatch(
+    ["中断", "abort"],
+    permission=Permission(_is_admin_or_superuser),
+    priority=2,
+    block=True,
+)
 
 
 @abort_matcher.handle()

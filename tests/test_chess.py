@@ -96,3 +96,23 @@ def test_render_png_and_gif():
     pgn_str = "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6"
     gif_bytes = generate_gif_bytes_from_pgn(pgn_str)
     assert gif_bytes.startswith(b"GIF89a") or gif_bytes.startswith(b"GIF87a")
+
+
+@pytest.mark.anyio
+async def test_chess_abort_permission_check():
+    from yukichan_bot.plugins.chess import _is_admin_or_superuser
+
+    class DummySender:
+        def __init__(self, role: str):
+            self.role = role
+
+    class DummyEvent:
+        def __init__(self, role: str):
+            self.sender = DummySender(role)
+
+    class DummyBot:
+        pass
+
+    assert await _is_admin_or_superuser(DummyBot(), DummyEvent("admin"))
+    assert await _is_admin_or_superuser(DummyBot(), DummyEvent("owner"))
+    assert not await _is_admin_or_superuser(DummyBot(), DummyEvent("member"))
