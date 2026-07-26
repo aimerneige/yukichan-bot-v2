@@ -10,7 +10,9 @@ def main() -> None:
     driver.register_adapter(OneBotV11Adapter)
     driver.register_adapter(QQAdapter)
 
-    nonebot.load_plugins("src/yukichan_bot/plugins")
+    from yukichan_bot.plugin_loader import load_enabled_plugins
+
+    load_enabled_plugins()
     nonebot.run()
 
 
