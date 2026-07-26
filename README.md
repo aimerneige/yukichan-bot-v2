@@ -51,13 +51,39 @@ uv sync
 cp .env.example .env
 ```
 
-### 4. 运行机器人
+### 4. 插件开关配置
+
+本项目支持通过配置文件控制插件的开启与禁用。配置文件路径为：`data/plugins_config.json`。
+
+* **如果文件不存在**：机器人首次启动时会自动创建 `data/` 目录与 `plugins_config.json` 文件，并自动扫描当前所有插件，默认将它们全部设为开启（`true`）。
+* **新增插件检测**：后续若新增插件，启动时会自动在配置文件中追加新插件并设为 `true`。
+
+#### 配置文件示例 (`data/plugins_config.json`)：
+
+```json
+{
+  "alipay": true,
+  "chess": true,
+  "fadian": true,
+  "fortune": true,
+  "match": true,
+  "random": true,
+  "read60s": true,
+  "suangua": true,
+  "tarot": true,
+  "ytdlp": false
+}
+```
+
+如需禁用某个插件（例如禁用 `ytdlp`），只需将其设置为 `false` 并重启机器人即可。被禁用的插件不会加载入内存，也不会响应任何指令。
+
+### 5. 运行机器人
 
 ```bash
 uv run python bot.py
 ```
 
-### 5. 运行单元测试
+### 6. 运行单元测试
 
 ```bash
 uv run pytest
