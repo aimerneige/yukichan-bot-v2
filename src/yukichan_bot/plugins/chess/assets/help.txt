@@ -10,5 +10,5 @@
 查看自己的等级分：「等级分」(rate)
 
 本项目是使用 AGPL-3.0 开源协议授权的开源项目。
-开源地址及使用帮助 https://github.com/aimerneige/yukichan-bot
-捐赠支持服务器运行：https://aimer.aiursoft.cn/zh/donate/
+开源地址及使用帮助 https://github.com/aimerneige/yukichan-bot-v2
+捐赠支持服务器运行：https://aimer.aiursoft.com/zh/donate/
