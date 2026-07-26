@@ -5,4 +5,7 @@ __pycache__/
 .coverage
 htmlcov/
 data/
+dist/
+build/
+
 
