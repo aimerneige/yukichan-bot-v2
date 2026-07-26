@@ -1,10 +1,17 @@
-# yukichan-bot-v2
+<div align="center">
+  <img src="docs/img/yukichan.svg" alt="ゆき酱" width="200">
+  <br>
 
-[![NoneBot2](https://img.shields.io/badge/NoneBot-v2.5+-red.svg)](https://nonebot.dev/)
-[![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
-[![License](https://img.shields.io/badge/License-AGPLv3-green.svg)](LICENSE)
+  <h1>yukichan-bot-v2</h1>
 
-基于 [NoneBot2](https://nonebot.dev/) 重建的 `yukichan-bot` 新版本。
+  [![NoneBot2](https://img.shields.io/badge/NoneBot-v2.5+-red.svg)](https://nonebot.dev/)
+  [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
+  [![License](https://img.shields.io/badge/License-AGPLv3-green.svg)](LICENSE)
+
+  <br>
+
+  基于 [NoneBot2](https://nonebot.dev/) 重建的 `yukichan-bot` 新版本。
+</div>
 
 ## 🌟 核心特性
 
@@ -12,7 +19,7 @@
 - **双适配器统一架构**：业务插件复用同套逻辑接口，根据发送平台自动匹配适宜的消息段（如 At/Mention、图片、语音消息段）。
 - **纯 Python 高性能渲染引擎**：告别 v1 依赖系统外部命令 `inkscape` 和外部 `pgn2gif` 脚本的模式，全面升级为 `python-chess` + `cairosvg` + `Pillow` 纯内存渲染与 GIF 合成，跨平台部署更轻量高效。
 - **动态插件配置开关**：支持通过配置文件自由开启或禁用指定插件，支持新增插件自动探测与持久化配置。
-- **现代化依赖管理**：使用 [uv](https://github.com/astral-sh/uv) 进行高效的 Python 依赖与虚拟环境管理。
+- **现代化依赖管理与容器化**：使用 [uv](https://github.com/astral-sh/uv) 管理依赖，并支持 Docker 容器化一键部署。
 
 ---
 
@@ -108,6 +115,19 @@ uv run python bot.py
 uv run pytest
 ```
 
+### 7. Docker 容器化部署
+
+确保已安装 [Docker](https://www.docker.com/) 及 Docker Compose：
+
+```bash
+# 使用 Docker Compose 一键启动
+docker compose up -d
+
+# 或手动构建镜像并运行
+docker build -t yukichan-v2 .
+docker run -d --name yukichan-v2 --net=host -v $(pwd)/.env:/app/.env -v $(pwd)/data:/app/data yukichan-v2
+```
+
 ---
 
 ## 📁 项目结构
@@ -117,6 +137,10 @@ yukichan-bot-v2/
 ├── data/                  # 本地数据目录 (数据库及插件配置文件)
 │   ├── chess/chess.db
 │   └── plugins_config.json
+├── docs/                  # 文档与图片资源
+│   └── img/
+│       ├── qr-code.png
+│       └── yukichan.svg
 ├── src/
 │   └── yukichan_bot/
 │       ├── plugin_loader.py  # 配置驱动的插件动态加载器
@@ -133,6 +157,19 @@ yukichan-bot-v2/
 │           └── ytdlp/
 ├── tests/                 # 单元测试目录
 ├── bot.py                 # Bot 启动主入口
+├── Dockerfile             # Docker 镜像构建配置
+├── docker-compose.yaml    # Docker Compose 部署配置
 ├── pyproject.toml         # 项目配置与依赖声明
 └── README.md
 ```
+
+---
+
+## 💬 交流群
+
+点击链接或扫码加入 QQ 群:
+
+[857066811](https://qm.qq.com/cgi-bin/qm/qr?k=rMtw1SlmoFOp08i5Zw5bM361ljIyzVA-&authKey=9OUzro5oH5CnnFaAbIMwa60987+8ZMwu5GvUAlFUzDIQKVL91z9zUhWp6m1Kayf8&noverify=0)
+
+![qrcode 857066811](docs/img/qr-code.png)
+

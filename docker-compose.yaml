@@ -1,0 +1,11 @@
+services:
+  yukichan:
+    build: .
+    container_name: yukichan-v2
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - ENVIRONMENT=prod
+    volumes:
+      - ./.env:/app/.env
+      - ./data:/app/data
