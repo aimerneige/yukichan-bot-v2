@@ -2,7 +2,7 @@
 name = "yukichan-bot-v2"
 version = "0.1.0"
 description = "A NoneBot2 implementation of yukichan-bot."
-readme = "CLAUDE.md"
+readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "nonebot2[fastapi,httpx,websockets]>=2.5.0,<3",
