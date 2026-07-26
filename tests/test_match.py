@@ -1,4 +1,4 @@
-from yukichan_bot.plugins.match import is_wife_message
+from yukichan_bot.plugins.match import MATCH_RULES, is_matched_message
 
 
 class TextEvent:
@@ -9,7 +9,8 @@ class TextEvent:
         return self.text
 
 
-def test_is_wife_message_matches_only_the_exact_text() -> None:
-    assert is_wife_message(TextEvent("老婆"))
-    assert not is_wife_message(TextEvent("老婆！"))
-    assert not is_wife_message(TextEvent("我的老婆"))
+def test_is_matched_message_matches_dict_rules() -> None:
+    assert is_matched_message(TextEvent("老婆"))
+    assert MATCH_RULES["老婆"] == "肥宅不要乱叫老婆啊！"
+    assert not is_matched_message(TextEvent("老婆！"))
+    assert not is_matched_message(TextEvent("我的老婆"))
