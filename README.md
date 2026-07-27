@@ -62,6 +62,27 @@ uv sync
 cp .env.example .env
 ```
 
+`.env` 中需要关注的配置项：
+
+| 配置项 | 说明 |
+|--------|------|
+| `HOST` / `PORT` | NoneBot2 监听地址与端口 |
+| `BOT_CONFIG` | `botcertificate.json` 的路径 |
+| `SUPERUSERS` | SuperUser 列表，拥有最高权限（可使用 `ytdlp`、`clean.rate` 等指令）|
+
+`SUPERUSERS` 写法：
+
+```env
+# OneBot V11 适配器：填 QQ 号
+SUPERUSERS=["123456789"]
+
+# QQ 官方适配器：填 openid（从收到的事件日志中获取，格式为一串随机字符）
+SUPERUSERS=["your_openid_here"]
+
+# 两种适配器同时使用时可混填
+SUPERUSERS=["123456789", "your_openid_here"]
+```
+
 **② 适配器凭据配置 (`botcertificate.json`)**
 
 复制示例文件并填入真实凭据：
