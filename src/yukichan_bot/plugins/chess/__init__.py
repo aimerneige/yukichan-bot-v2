@@ -5,10 +5,33 @@ from nonebot import on_command, on_fullmatch, on_regex
 from nonebot.adapters import Bot, Event
 from nonebot.params import CommandArg, RegexMatched
 from nonebot.permission import SUPERUSER, Permission
+from nonebot.rule import Rule
 
 from .core import ChessService, ReplyResult
 
 chess_service = ChessService()
+
+
+async def _group_only(event: Event) -> bool:
+    """仅允许群聊事件，私聊静默忽略。"""
+    try:
+        from nonebot.adapters.onebot.v11 import GroupMessageEvent
+
+        if isinstance(event, GroupMessageEvent):
+            return True
+    except ImportError:
+        pass
+    try:
+        from nonebot.adapters.qq import GroupAtMessageCreateEvent
+
+        if isinstance(event, GroupAtMessageCreateEvent):
+            return True
+    except ImportError:
+        pass
+    return False
+
+
+GROUP_ONLY = Rule(_group_only)
 
 
 async def _is_admin_or_superuser(bot: Bot, event: Event) -> bool:
@@ -91,7 +114,7 @@ async def _send_reply(matcher, bot: Bot, event: Event, result: Optional[ReplyRes
 
 
 # Matchers
-game_matcher = on_fullmatch(["下棋", "chess"], priority=2, block=True)
+game_matcher = on_fullmatch(["下棋", "chess"], rule=GROUP_ONLY, priority=2, block=True)
 
 
 @game_matcher.handle()
@@ -102,7 +125,7 @@ async def _(bot: Bot, event: Event):
     await _send_reply(game_matcher, bot, event, res)
 
 
-blind_matcher = on_fullmatch(["盲棋", "blind"], priority=2, block=True)
+blind_matcher = on_fullmatch(["盲棋", "blind"], rule=GROUP_ONLY, priority=2, block=True)
 
 
 @blind_matcher.handle()
@@ -113,7 +136,7 @@ async def _(bot: Bot, event: Event):
     await _send_reply(blind_matcher, bot, event, res)
 
 
-resign_matcher = on_fullmatch(["认输", "resign"], priority=2, block=True)
+resign_matcher = on_fullmatch(["认输", "resign"], rule=GROUP_ONLY, priority=2, block=True)
 
 
 @resign_matcher.handle()
@@ -124,7 +147,7 @@ async def _(bot: Bot, event: Event):
     await _send_reply(resign_matcher, bot, event, res)
 
 
-draw_matcher = on_fullmatch(["和棋", "draw"], priority=2, block=True)
+draw_matcher = on_fullmatch(["和棋", "draw"], rule=GROUP_ONLY, priority=2, block=True)
 
 
 @draw_matcher.handle()
@@ -137,6 +160,7 @@ async def _(bot: Bot, event: Event):
 
 abort_matcher = on_fullmatch(
     ["中断", "abort"],
+    rule=GROUP_ONLY,
     permission=Permission(_is_admin_or_superuser),
     priority=2,
     block=True,
@@ -151,7 +175,7 @@ async def _(bot: Bot, event: Event):
 
 
 play_matcher = on_regex(
-    r"^[!|！]([0-8]|[R|N|B|Q|K|O|a-h|x]|[-|=|+])+$", priority=2, block=True
+    r"^[!|！]([0-8]|[R|N|B|Q|K|O|a-h|x]|[-|=|+])+$", rule=GROUP_ONLY, priority=2, block=True
 )
 
 
@@ -164,7 +188,7 @@ async def _(bot: Bot, event: Event, matched: str = RegexMatched()):
     await _send_reply(play_matcher, bot, event, res)
 
 
-ranking_matcher = on_fullmatch(["排行榜", "ranking"], priority=2, block=True)
+ranking_matcher = on_fullmatch(["排行榜", "ranking"], rule=GROUP_ONLY, priority=2, block=True)
 
 
 @ranking_matcher.handle()
@@ -173,7 +197,7 @@ async def _(bot: Bot, event: Event):
     await _send_reply(ranking_matcher, bot, event, res)
 
 
-rate_matcher = on_fullmatch(["等级分", "rate"], priority=2, block=True)
+rate_matcher = on_fullmatch(["等级分", "rate"], rule=GROUP_ONLY, priority=2, block=True)
 
 
 @rate_matcher.handle()
@@ -186,6 +210,7 @@ async def _(bot: Bot, event: Event):
 clean_rate_matcher = on_command(
     "clean.rate",
     aliases={".clean.rate", "清空等级分"},
+    rule=GROUP_ONLY,
     permission=SUPERUSER,
     priority=2,
     block=True,
@@ -202,7 +227,7 @@ async def _(bot: Bot, event: Event, arg=CommandArg()):
     await _send_reply(clean_rate_matcher, bot, event, res)
 
 
-pgn2gif_matcher = on_command("pgn2gif", priority=2, block=True)
+pgn2gif_matcher = on_command("pgn2gif", rule=GROUP_ONLY, priority=2, block=True)
 
 
 @pgn2gif_matcher.handle()
@@ -215,7 +240,7 @@ async def _(bot: Bot, event: Event, arg=CommandArg()):
 
 
 lichess_matcher = on_regex(
-    r"^https://lichess\.org/([0-9]|[a-z]|[A-Z])+$", priority=2, block=True
+    r"^https://lichess\.org/([0-9]|[a-z]|[A-Z])+$", rule=GROUP_ONLY, priority=2, block=True
 )
 
 
@@ -226,7 +251,7 @@ async def _(bot: Bot, event: Event):
     await _send_reply(lichess_matcher, bot, event, res)
 
 
-cheese_matcher = on_fullmatch("cheese", priority=2, block=True)
+cheese_matcher = on_fullmatch("cheese", rule=GROUP_ONLY, priority=2, block=True)
 
 
 @cheese_matcher.handle()
@@ -235,7 +260,7 @@ async def _(bot: Bot, event: Event):
     await _send_reply(cheese_matcher, bot, event, res)
 
 
-help_matcher = on_fullmatch(["帮助", "help"], priority=2, block=True)
+help_matcher = on_fullmatch(["帮助", "help"], rule=GROUP_ONLY, priority=2, block=True)
 
 
 @help_matcher.handle()
