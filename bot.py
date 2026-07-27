@@ -35,8 +35,10 @@ def main() -> None:
     nonebot.init(**nb_config)
 
     driver = nonebot.get_driver()
-    driver.register_adapter(OneBotV11Adapter)
-    driver.register_adapter(QQAdapter)
+    if "onebot" in cert:
+        driver.register_adapter(OneBotV11Adapter)
+    if "qq" in cert:
+        driver.register_adapter(QQAdapter)
 
     from yukichan_bot.plugin_loader import load_enabled_plugins
 
