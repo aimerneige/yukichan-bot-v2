@@ -23,7 +23,7 @@ async def _(bot: Bot, event: Event):
     elif adapter_name == "QQ":
         from nonebot.adapters.qq import Message, MessageSegment
 
-        msg = MessageSegment.at(user_id) + MessageSegment.text(" " + text)
+        msg = MessageSegment.mention_user(user_id) + MessageSegment.text(" " + text)
         await coin_matcher.finish(msg)
     else:
         await coin_matcher.finish(text)
@@ -65,7 +65,7 @@ async def _(bot: Bot, event: Event):
     elif adapter_name == "QQ":
         from nonebot.adapters.qq import MessageSegment
 
-        msg = MessageSegment.at(user_id) + MessageSegment.text(" " + text)
+        msg = MessageSegment.mention_user(user_id) + MessageSegment.text(" " + text)
         await dice_matcher.finish(msg)
     else:
         await dice_matcher.finish(text)
