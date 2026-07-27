@@ -2123,7 +2123,7 @@ wheels = [
 [[package]]
 name = "yukichan-bot-v2"
 version = "2.0.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "cairosvg" },
     { name = "imageio" },
