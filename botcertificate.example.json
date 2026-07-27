@@ -1,0 +1,18 @@
+{
+  "qq": {
+    "is_sandbox": true,
+    "bots": [
+      {
+        "id": "your_app_id",
+        "token": "your_app_token",
+        "secret": "your_app_secret",
+        "intent": {
+          "c2c_group_at_messages": true
+        }
+      }
+    ]
+  },
+  "onebot": {
+    "ws_urls": ["ws://127.0.0.1:8081"]
+  }
+}

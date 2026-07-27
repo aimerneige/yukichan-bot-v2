@@ -8,4 +8,5 @@ services:
       - ENVIRONMENT=prod
     volumes:
       - ./.env:/app/.env
+      - ./botcertificate.json:/app/botcertificate.json
       - ./data:/app/data
