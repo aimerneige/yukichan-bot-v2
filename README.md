@@ -52,30 +52,53 @@
 uv sync
 ```
 
-### 3. 环境配置 (`.env`)
+### 3. 环境配置
 
-复制 `.env.example` 并重命名为 `.env`，根据所使用的适配器配置参数：
+**① 基础运行配置 (`.env`)**
+
+复制 `.env.example` 并重命名为 `.env`：
 
 ```bash
 cp .env.example .env
 ```
 
-`.env` 配置项说明：
+**② 适配器凭据配置 (`botcertificate.json`)**
 
-* **OneBot V11 配置**（使用 LLOneBot / NapCat / Lagrange 等）：
-  ```env
-  DRIVER=~fastapi+~httpx+~websockets
-  HOST=127.0.0.1
-  PORT=8080
-  # 反向 WebSocket 地址配置
-  ONEBOT_WS_URLS=["ws://127.0.0.1:8081"]
-  ```
+复制示例文件并填入真实凭据：
 
-* **QQ 官方机器人配置**：
-  ```env
-  QQ_IS_SANDBOX=true
-  QQ_BOTS='[{"id":"app_id","token":"app_token","secret":"app_secret","intent":{"c2c_group_at_messages":true}}]'
-  ```
+```bash
+cp botcertificate.example.json botcertificate.json
+```
+
+`botcertificate.json` 结构说明：
+
+```json
+{
+  "qq": {
+    "is_sandbox": true,
+    "bots": [
+      {
+        "id": "your_app_id",
+        "token": "your_app_token",
+        "secret": "your_app_secret",
+        "intent": {
+          "c2c_group_at_messages": true
+        }
+      }
+    ]
+  },
+  "onebot": {
+    "ws_urls": ["ws://127.0.0.1:8081"]
+  }
+}
+```
+
+> **适配器开关：两个顶级 key 均为可选。**
+> - 保留 `"onebot"` key → 启用 OneBot V11 适配器（用于 LLOneBot / NapCat / Lagrange 等）
+> - 保留 `"qq"` key → 启用 QQ 官方机器人适配器
+> - 删除对应 key → 该适配器不会被注册，不会产生任何连接报错
+>
+> 两个 key 可以同时存在，也可以只保留其中一个。
 
 ### 4. 插件开关配置 (`data/plugins_config.json`)
 
@@ -155,11 +178,13 @@ yukichan-bot-v2/
 │           ├── suangua/
 │           ├── tarot/
 │           └── ytdlp/
-├── tests/                 # 单元测试目录
-├── bot.py                 # Bot 启动主入口
-├── Dockerfile             # Docker 镜像构建配置
-├── docker-compose.yaml    # Docker Compose 部署配置
-├── pyproject.toml         # 项目配置与依赖声明
+├── tests/                       # 单元测试目录
+├── bot.py                       # Bot 启动主入口
+├── botcertificate.json          # 适配器凭据配置（本地，不提交 Git）
+├── botcertificate.example.json  # 凭据配置模板
+├── Dockerfile                   # Docker 镜像构建配置
+├── docker-compose.yaml          # Docker Compose 部署配置
+├── pyproject.toml               # 项目配置与依赖声明
 └── README.md
 ```
 
